@@ -9,6 +9,12 @@
     "moduleResolution": "Node16",
     "outDir": "build"
   },
-  "exclude": ["node_modules/"],
-  "include": ["src/**/*.ts", "src/config/database.js"]
+  "exclude": [
+    "node_modules/"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/db/config/database.ts",
+    "src/db/models/user.js"
+  ]
 }

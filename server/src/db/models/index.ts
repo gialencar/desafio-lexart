@@ -1,3 +1,4 @@
+/* 
 'use strict';
 
 const fs = require('fs');
@@ -36,3 +37,10 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+ */
+
+import 'dotenv/config';
+import { Sequelize } from 'sequelize';
+import * as config from '../config/database';
+
+export default new Sequelize(config[process.env.NODE_ENV || 'development']);
