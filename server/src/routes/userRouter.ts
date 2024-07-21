@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/user.controller';
+import authMiddleware from '../middlewares/authMiddleware';
 
 const controller = new UserController();
 
 const userRouter = Router();
 
 userRouter
-  .get('/', (req, res, next) => {
+  .get('/', authMiddleware, (req, res, next) => {
     controller.getAll(req, res, next);
   })
   .post('/login', (req, res, next) => {
