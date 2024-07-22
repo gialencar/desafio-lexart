@@ -49,6 +49,24 @@ export default function Page() {
       console.error("Error fetching data:", error);
     }
   };
+
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await fetch(`${NEXT_PUBLIC_API_URL}/products/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response.ok) {
+        setProducts(products.filter((product) => product.id !== id));
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <div className="h-max min-h-screen bg-stone-100">
       <div className="mx-auto max-w-screen-2xl rounded-md bg-white">
@@ -108,9 +126,7 @@ export default function Page() {
                       </Button>
                       <Button
                         variant={"destructive"}
-                        onClick={() => {
-                          console.log(product.id);
-                        }}
+                        onClick={() => handleDelete(product.id)}
                       >
                         Excluir
                       </Button>
