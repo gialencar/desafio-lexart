@@ -24,9 +24,14 @@ export type Product = {
 };
 
 export default function Page() {
+  const token = localStorage.getItem("token");
+  const router = useRouter();
+  if (!token) {
+    router.push("/auth");
+  }
+
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState<string>("");
-  const router = useRouter();
 
   useEffect(() => {
     fetchData();
@@ -71,16 +76,26 @@ export default function Page() {
     <div className="h-max min-h-screen bg-stone-100">
       <div className="mx-auto max-w-screen-2xl rounded-md bg-white">
         <div className="flex items-center justify-between gap-4 px-12 py-8">
-          <h1 className="text-2xl font-semibold">Produtos</h1>
-          <Input
-            className="max-w-screen-md"
-            placeholder="Filtrar"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setSearch(e.target.value)
-            }
-          />
+          <div className="flex-1">
+            <h1 className="text-2xl font-semibold">Produtos</h1>
+          </div>
 
-          <Button onClick={() => fetchData()}>Atualizar</Button>
+          <div className="flex grow-[2] justify-center">
+            <Input
+              className="max-w-screen-md"
+              placeholder="Filtrar"
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setSearch(e.target.value)
+              }
+            />
+          </div>
+
+          <div className="flex flex-1 justify-end gap-2">
+            <Button onClick={() => router.push("/product/new")}>
+              Novo Produto
+            </Button>
+            <Button onClick={() => fetchData()}>Atualizar</Button>
+          </div>
         </div>
 
         <div className="mx-auto flex max-w-screen-md items-center justify-center">
