@@ -45,7 +45,7 @@ class UserService {
         throw new Error('Invalid credentials');
       }
       const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
-        expiresIn: '1h',
+        expiresIn: '12h',
       });
       return { user: { name: user.name, email: user.email }, token };
     } catch (error: unknown) {

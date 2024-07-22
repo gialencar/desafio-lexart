@@ -17,6 +17,10 @@ export class ProductsController {
     try {
       const id = parseInt(req.params.id);
       const user = await this.service.getById(id);
+      if (!user) {
+        res.status(404).json({ error: 'Product not found' });
+        return;
+      }
       res.status(200).json(user);
     } catch (error) {
       next(error);
@@ -36,6 +40,10 @@ export class ProductsController {
     try {
       const id = parseInt(req.params.id);
       const user = await this.service.update(id, req.body);
+      if (!user) {
+        res.status(404).json({ error: 'Product not found' });
+        return;
+      }
       res.status(200).json(user);
     } catch (error) {
       next(error);
@@ -45,7 +53,11 @@ export class ProductsController {
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const id = parseInt(req.params.id);
-      await this.service.delete(id);
+      const deleted = await this.service.delete(id);
+      if (!deleted) {
+        res.status(404).json({ error: 'Product not found' });
+        return;
+      }
       res.status(204).end();
     } catch (error) {
       next(error);

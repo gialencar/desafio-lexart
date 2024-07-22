@@ -17,7 +17,7 @@ class ProductsService {
     try {
       const product = await this.model.findByPk(id);
       if (!product) {
-        throw new Error('Product not found');
+        return;
       }
       return product;
     } catch (error) {
@@ -25,19 +25,28 @@ class ProductsService {
     }
   }
 
-  async create(data: Product) {
+  async create({ name, brand, model, price, color }: Product) {
     try {
-      const product = await this.model.create({ data });
+      const product = await this.model.create({
+        name,
+        brand,
+        model,
+        price,
+        color,
+      });
       return product;
     } catch (error) {
       throw new Error('Failed to create product');
     }
   }
 
-  async update(id: number, data: Product) {
+  async update(id: number, { name, brand, model, price, color }: Product) {
     try {
       const product = await this.getById(id);
-      await product.update(data);
+      if (!product) {
+        return;
+      }
+      await product.update({ name, brand, model, price, color });
       return product;
     } catch (error) {
       throw new Error('Failed to update product');
@@ -47,7 +56,11 @@ class ProductsService {
   async delete(id: number) {
     try {
       const product = await this.getById(id);
+      if (!product) {
+        return;
+      }
       await product.destroy();
+      return product;
     } catch (error) {
       throw new Error('Failed to delete product');
     }
