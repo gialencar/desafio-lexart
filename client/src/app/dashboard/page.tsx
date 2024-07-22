@@ -9,11 +9,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-type Product = {
+export type Product = {
   id: number;
   name: string;
   brand: string;
@@ -25,6 +26,7 @@ type Product = {
 export default function Page() {
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     fetchData();
@@ -39,12 +41,10 @@ export default function Page() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      // console.log(await response.json());
       if (response.ok) {
         const data = await response.json();
         setProducts(data);
       }
-      // Process the data as needed
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -94,6 +94,26 @@ export default function Page() {
                         style: "currency",
                         currency: "BRL",
                       }).format(product.price)}
+                    </TableCell>
+                    <TableCell className="flex items-center gap-2">
+                      <Button
+                        variant={"secondary"}
+                        className="my-2"
+                        onClick={() => {
+                          console.log(product.id);
+                          router.push(`/product/${product.id}`);
+                        }}
+                      >
+                        Editar
+                      </Button>
+                      <Button
+                        variant={"destructive"}
+                        onClick={() => {
+                          console.log(product.id);
+                        }}
+                      >
+                        Excluir
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
