@@ -24,18 +24,18 @@ export type Product = {
 };
 
 export default function Page() {
-  const token = localStorage.getItem("token");
-  const router = useRouter();
-  if (!token) {
-    router.push("/auth");
-  }
-
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState<string>("");
 
+  const router = useRouter();
+
   useEffect(() => {
+    const token = window.localStorage.getItem("token");
+    if (!token) {
+      router.push("/auth");
+    }
     fetchData();
-  }, []);
+  }, [router]);
 
   const fetchData = async () => {
     try {
