@@ -30,9 +30,11 @@ export default function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    const token = window.localStorage.getItem("token");
-    if (!token) {
-      router.push("/auth");
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/auth");
+      }
     }
     fetchData();
   }, [router]);
